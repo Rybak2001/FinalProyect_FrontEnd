@@ -1,0 +1,22 @@
+<form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+  <label for="first-name"> First Name: </label>
+  <input id="first-name" type="text" formControlName="firstName" />
+  <br />
+  <label for="last-name"> Last Name: </label>
+  <input id="last-name" type="text" formControlName="lastName" />
+  <br />
+  <label for="email"> Email: </label>
+  <input id="email" type="text" formControlName="email" />
+  <br />
+  <label for="password"> Pasword: </label>
+  <input id="password" type="text" formControlName="password" />
+  <br />
+  <button type="submit">Enviar</button>
+
+
+
+</form>
+@if (user$ | async; as user) {
+  <p>Name: {{ user.firstName }}</p>
+  <p>LastName: {{ user.lastName }}</p>
+}
