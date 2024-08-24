@@ -1,9 +1,32 @@
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-  <label for="email">Email:</label>
-  <input id="email" type="text" formControlName="email" />
-  <br />
-  <label for="password">Password:</label>
-  <input id="password" type="password" formControlName="password" />
-  <br />
-  <button type="submit">Login</button>
-</form>
+<div class="login-container">
+  <div class="card">
+    <h2 class="card-title">Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="card-content">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email" placeholder="@gmail.com">
+        <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" class="error-message">
+          <div *ngIf="loginForm.get('email')?.errors?.['required']">Email is required.</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email address.</div>
+          <div *ngIf="loginForm.get('email')?.errors?.['invalidDomain']">Email must end with example.com</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password">
+        <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" class="error-message">
+          <div *ngIf="loginForm.get('password')?.errors?.['required']">Password is required.</div>
+          <div *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long.</div>
+          <div *ngIf="loginForm.get('password')?.errors?.['weakPassword']">Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character.</div>
+        </div>
+      </div>
+      <div *ngIf="loginError" class="error-message">
+        {{ loginError }}
+      </div>
+      <button type="submit" [disabled]="loginForm.invalid || isLoading" class="submit-button">
+        <span class="spinner" *ngIf="isLoading"></span>
+        {{ isLoading ? 'Signing In...' : 'Sign In' }}
+      </button>
+    </form>
+  </div>
+</div>

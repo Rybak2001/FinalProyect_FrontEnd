@@ -11,9 +11,12 @@ import { LoginComponent } from './login/login.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule,UserProfileComponent,UsersListComponent,UserRegisterComponent
-    ,LoginComponent
-  ],
+  imports: [RouterOutlet,
+     ReactiveFormsModule,
+     UserProfileComponent,
+     UsersListComponent,
+     UserRegisterComponent,
+    LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })

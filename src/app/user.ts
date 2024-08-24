@@ -3,6 +3,7 @@ import { HttpService } from './http.service';
 import { HttpClient, HttpHandler } from '@angular/common/http';
 
 export class User {
+  id:any
   firstName: any;
   lastName: any;
   email: any;

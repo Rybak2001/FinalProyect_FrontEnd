@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { catchError, map, tap } from 'rxjs/operators';
 import { User } from './user';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { User } from './user';
 })
 export class UserService {
   private apiUrl = 'https://node-server-lilac-seven.vercel.app';
+  private authTokenKey = 'authToken';
 
   constructor(private http: HttpClient) {}
 
@@ -66,12 +68,40 @@ export class UserService {
       'Content-Type': 'application/x-www-form-urlencoded',
     });
 
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, body.toString(), { headers });
+    const tokengenerated='dsadsad'
+    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, body.toString(), { headers }).pipe(
+      tap(response => this.saveToken(tokengenerated)),
+      //tap(response => this.saveToken(response.token)), // Guardar el token en el localStorage
+      catchError(this.handleError<{ token: string }>('login'))
+    );
+  }
+
+  // Guardar el token en localStorage
+  private saveToken(token: string): void {
+    console.log("logeado")
+    localStorage.setItem(this.authTokenKey, token);
+  }
+
+  // Obtener el token almacenado
+  getToken(): string | null {
+    return localStorage.getItem(this.authTokenKey);
+  }
+
+  // Verificar si el usuario está autenticado
+  isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 
   // Cerrar sesión
   logout(): void {
-    // Aquí puedes eliminar el token de sesión guardado en localStorage o cookies
-    localStorage.removeItem('authToken');
+    localStorage.removeItem(this.authTokenKey);
+  }
+
+  // Manejar errores de la API
+  private handleError<T>(operation = 'operation', result?: T) {
+    return (error: any): Observable<T> => {
+      console.error(`${operation} failed: ${error.message}`);
+      return of(result as T);
+    };
   }
 }
