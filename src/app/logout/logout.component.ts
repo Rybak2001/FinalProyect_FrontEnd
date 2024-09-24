@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { AsyncPipe, NgFor, NgIf,NgStyle } from '@angular/common';
 import { Router } from '@angular/router';
   @Component({
@@ -32,7 +32,6 @@ import { Router } from '@angular/router';
 
     logout() {
       this.userService.logout();
-      console.log('Logged out');
       this.router.navigate(['/login']);
     }
 

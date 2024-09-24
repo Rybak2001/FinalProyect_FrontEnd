@@ -1,0 +1,70 @@
+<div class="dashboard-container">
+  <h2>Panel de Gestión de Puntos de Anclaje</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="anchorpoint-list">
+    <h3>Lista de Puntos de Anclaje</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID del Punto de Anclaje</th>
+          <th>Datos Espaciales</th>
+          <th>Metadatos</th>
+          <th>Datos del Usuario</th>
+          <th>URL del Modelo de Animal</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let anchorPoint of anchorPoints$ | async">
+          <td>{{ anchorPoint.id }}</td>
+          <td>{{ anchorPoint.spatial_data }}</td>
+          <td>{{ anchorPoint.metadata }}</td>
+          <td>{{ anchorPoint.user_data }}</td>
+          <td>{{ anchorPoint.animal_model_url }}</td>
+          <td>{{ anchorPoint.description }}</td>
+          <td>
+            <button (click)="selectAnchorPoint(anchorPoint.id)">Editar</button>
+            <button (click)="deleteAnchorPoint(anchorPoint.id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="anchorpoint-form">
+    <h3>{{ selectedAnchorPointId ? 'Editar Punto de Anclaje' : 'Crear Nuevo Punto de Anclaje' }}</h3>
+    <form [formGroup]="anchorPointForm" (ngSubmit)="selectedAnchorPointId ? updateAnchorPoint() : createAnchorPoint()">
+      <div>
+        <label for="spatial_data">Datos Espaciales:</label>
+        <input id="spatial_data" type="text" formControlName="spatial_data">
+      </div>
+      <div>
+        <label for="metadata">Metadatos:</label>
+        <input id="metadata" type="text" formControlName="metadata">
+      </div>
+      <div>
+        <label for="user_data">Datos del Usuario:</label>
+        <input id="user_data" type="text" formControlName="user_data">
+      </div>
+      <div>
+        <label for="animal_model_url">URL del Modelo de Animal:</label>
+        <select id="animal_model_url" formControlName="animal_model_url">
+          <option *ngFor="let url of animalModelUrls" [value]="url">{{ url }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="description">Descripción:</label>
+        <input id="description" type="text" formControlName="description">
+      </div>
+      <button type="submit" [disabled]="!anchorPointForm.valid">
+        {{ selectedAnchorPointId ? 'Actualizar Punto de Anclaje' : 'Crear Punto de Anclaje' }}
+      </button>
+      <button type="button" *ngIf="selectedAnchorPointId" (click)="selectedAnchorPointId = null; anchorPointForm.reset()">Cancelar</button>
+    </form>
+  </div>
+</div>

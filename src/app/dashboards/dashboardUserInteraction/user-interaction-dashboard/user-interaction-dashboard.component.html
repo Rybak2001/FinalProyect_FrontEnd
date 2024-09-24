@@ -1,0 +1,66 @@
+<div class="dashboard-container">
+  <h2>Panel de Gestión de Interacciones de Usuario</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="userinteraction-list">
+    <h3>Lista de Interacciones de Usuario</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID de la Interacción de Usuario</th>
+          <th>ID de Usuario</th>
+          <th>ID de Punto de Anclaje</th>
+          <th>Tipo de Interacción</th>
+          <th>Marca de Tiempo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userInteraction of userInteractions$ | async">
+          <td>{{ userInteraction.interaction_id }}</td>
+          <td>{{ userInteraction.user_id }}</td>
+          <td>{{ userInteraction.anchor_id }}</td>
+          <td>{{ userInteraction.interaction_type }}</td>
+          <td>{{ userInteraction.timestamp | date: 'short' }}</td>
+          <td>
+            <button (click)="selectUserInteraction(userInteraction.interaction_id)">Editar</button>
+            <button (click)="deleteUserInteraction(userInteraction.interaction_id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="userinteraction-form">
+    <h3>{{ selectedUserInteractionId ? 'Editar Interacción de Usuario' : 'Crear Nueva Interacción de Usuario' }}</h3>
+    <form [formGroup]="userInteractionForm" (ngSubmit)="selectedUserInteractionId ? updateUserInteraction() : createUserInteraction()">
+      <div>
+        <label for="user_id">ID de Usuario:</label>
+        <select id="user_id" formControlName="user_id">
+          <option *ngFor="let user of users" [value]="user.user_id">{{ user.username }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="anchor_id">ID de Punto de Anclaje:</label>
+        <select id="anchor_id" formControlName="anchor_id">
+          <option *ngFor="let anchor of anchorPoints" [value]="anchor.id">{{ anchor.description }}</option>
+        </select>
+      </div>
+      <div>
+        <label for="interaction_type">Tipo de Interacción:</label>
+        <input id="interaction_type" type="text" formControlName="interaction_type">
+      </div>
+      <div>
+        <label for="timestamp">Marca de Tiempo:</label>
+        <input id="timestamp" type="datetime-local" formControlName="timestamp">
+      </div>
+      <button type="submit" [disabled]="!userInteractionForm.valid">
+        {{ selectedUserInteractionId ? 'Actualizar Interacción de Usuario' : 'Crear Interacción de Usuario' }}
+      </button>
+      <button type="button" *ngIf="selectedUserInteractionId" (click)="selectedUserInteractionId = null; userInteractionForm.reset()">Cancelar</button>
+    </form>
+  </div>
+</div>

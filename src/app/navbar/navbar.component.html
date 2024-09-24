@@ -1,13 +1,12 @@
-<!-- Conditionally display the navbar -->
-<nav class="navbar" *ngIf="showNavbar()">
+<nav class="navbar">
   <ul>
     <li><a [routerLink]="['/user-dashboard']">Panel de Usuario</a></li>
     <li><a [routerLink]="['/animal-model-dashboard']">Panel de Modelos de Animales</a></li>
     <li><a [routerLink]="['/anchor-point-dashboard']">Panel de Puntos de Anclaje</a></li>
     <li><a [routerLink]="['/user-interaction-dashboard']">Panel de Interacciones de Usuario</a></li>
-    <li><a (click)="logout()">Cerrar Sesión</a></li>
+    <li><a [routerLink]="['/logout']">Cerrar Sesión</a></li>
   </ul>
 </nav>
 
-<!-- The router-outlet will load the selected dashboard or login component here -->
+<!-- El router-outlet cargará el panel seleccionado aquí -->
 <router-outlet></router-outlet>

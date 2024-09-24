@@ -1,0 +1,37 @@
+/* Style for the fixed navigation bar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #333;
+  padding: 10px 0;
+  z-index: 1000;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+}
+
+.navbar ul li {
+  display: inline;
+}
+
+.navbar ul li a {
+  text-decoration: none;
+  color: white;
+  padding: 14px 20px;
+  display: inline-block;
+}
+
+.navbar ul li a:hover {
+  background-color: #575757;
+}
+
+body {
+  margin-top: 50px; /* Adjust margin to avoid content being hidden by the navbar */
+}

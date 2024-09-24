@@ -1,0 +1,62 @@
+<div class="dashboard-container">
+  <h2>Panel de Gestión de Modelos de Animales</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="animalmodel-list">
+    <h3>Lista de Modelos de Animales</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>ID del Modelo</th>
+          <th>Nombre del Modelo</th>
+          <th>URL del Modelo</th>
+          <th>URL de la Miniatura</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let animalModel of animalModels$ | async">
+          <td>{{ animalModel.model_id }}</td>
+          <td>{{ animalModel.model_name }}</td>
+          <td>{{ animalModel.model_url }}</td>
+          <td>{{ animalModel.thumbnail_url }}</td>
+          <td>{{ animalModel.description }}</td>
+          <td>
+            <button (click)="selectAnimalModel(animalModel.model_id)">Editar</button>
+            <button (click)="deleteAnimalModel(animalModel.model_id)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="animalmodel-form">
+    <h3>{{ selectedAnimalModelId ? 'Editar Modelo de Animal' : 'Crear Nuevo Modelo de Animal' }}</h3>
+    <form [formGroup]="animalModelForm" (ngSubmit)="selectedAnimalModelId ? updateAnimalModel() : createAnimalModel()" enctype="multipart/form-data">
+      <div>
+        <label for="model_name">Nombre del Modelo:</label>
+        <input id="model_name" type="text" formControlName="model_name">
+      </div>
+      <div>
+        <label for="model_file">Archivo del Modelo 3D:</label>
+        <input id="model_file" type="file" (change)="onFileSelected($event)">
+      </div>
+      <div>
+        <label for="thumbnail_url">URL de la Miniatura:</label>
+        <input id="thumbnail_url" type="text" formControlName="thumbnail_url">
+      </div>
+      <div>
+        <label for="description">Descripción:</label>
+        <input id="description" type="text" formControlName="description">
+      </div>
+      <button type="submit" [disabled]="!animalModelForm.valid">
+        {{ selectedAnimalModelId ? 'Actualizar Modelo de Animal' : 'Crear Modelo de Animal' }}
+      </button>
+      <button type="button" *ngIf="selectedAnimalModelId" (click)="selectedAnimalModelId = null; animalModelForm.reset()">Cancelar</button>
+    </form>
+  </div>
+</div>

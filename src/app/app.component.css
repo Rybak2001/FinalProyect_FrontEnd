@@ -1,0 +1,40 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; /* Full width */
+  height: 60px; /* Set a height for the navbar */
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  z-index: 1000; /* Ensure it's on top of other elements */
+  display: flex;
+  align-items: center; /* Center content vertically */
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  width: 100%;
+}
+
+.navbar li {
+  margin-right: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px;
+}
+
+.navbar a:hover {
+  background-color: #555;
+}
+
+.content {
+  padding-top: 80px; /* Add padding equal to the navbar's height */
+  /* Additional styling for content */
+}

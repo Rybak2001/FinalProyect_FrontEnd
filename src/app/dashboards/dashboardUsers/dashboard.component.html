@@ -1,0 +1,69 @@
+<div class="dashboard-container">
+  <h2>User Management Dashboard</h2>
+
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
+
+  <div class="user-list">
+    <h3>User List</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>User ID</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th>User Role</th> <!-- Add User Role column -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users$ | async">
+          <td>{{ user.user_id }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.user_role }}</td> <!-- Display User Role -->
+          <td>
+            <button (click)="selectUser(user.user_id)">Edit</button>
+            <button (click)="deleteUser(user.user_id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="user-form">
+    <h3>{{ selectedUserId ? 'Edit User' : 'Create New User' }}</h3>
+    <form [formGroup]="userForm" (ngSubmit)="selectedUserId ? updateUser() : createUser()">
+      <div>
+        <label for="username">Username:</label>
+        <input id="username" type="text" formControlName="username">
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input id="email" type="email" formControlName="email">
+      </div>
+      <div>
+        <label for="password_hash">Password:</label>
+        <input id="password_hash" type="password" formControlName="password_hash">
+      </div>
+      <div>
+        <label for="confirmPassword">Confirm Password:</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword">
+      </div>
+      <div>
+        <label for="user_role">User Role:</label>
+        <select id="user_role" formControlName="user_role">
+          <option value="web">Web</option>
+          <option value="mobile">Mobile</option>
+          <option value="admin">Admin</option>
+          <option value="editor">Editor</option>
+        </select>
+      </div>
+      <button type="submit" [disabled]="!userForm.valid">
+        {{ selectedUserId ? 'Update User' : 'Create User' }}
+      </button>
+      <button type="button" *ngIf="selectedUserId" (click)="selectedUserId = null; userForm.reset()">Cancel</button>
+    </form>
+  </div>
+</div>
